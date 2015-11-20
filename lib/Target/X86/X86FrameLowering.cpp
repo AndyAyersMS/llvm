@@ -153,14 +153,7 @@ static unsigned findDeadCallerSavedReg(MachineBasicBlock &MBB,
   if (!F || MF->getMMI().callsEHReturn())
     return 0;
 
-  static const uint16_t CallerSavedRegs32Bit[] = {
-    X86::EAX, X86::EDX, X86::ECX, 0
-  };
-
-  static const uint16_t CallerSavedRegs64Bit[] = {
-    X86::RAX, X86::RDX, X86::RCX, X86::RSI, X86::RDI,
-    X86::R8,  X86::R9,  X86::R10, X86::R11, 0
-  };
+  const TargetRegisterClass& AvailableRegs = *TRI->getPointerRegClass(*MF, 4);
 
   unsigned Opc = MBBI->getOpcode();
   switch (Opc) {
@@ -189,10 +182,9 @@ static unsigned findDeadCallerSavedReg(MachineBasicBlock &MBB,
         Uses.insert(*AI);
     }
 
-    const uint16_t *CS = Is64Bit ? CallerSavedRegs64Bit : CallerSavedRegs32Bit;
-    for (; *CS; ++CS)
-      if (!Uses.count(*CS))
-        return *CS;
+    for (auto CS : AvailableRegs)
+      if (!Uses.count(CS))
+        return CS;
   }
   }
 
