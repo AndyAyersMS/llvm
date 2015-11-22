@@ -153,7 +153,7 @@ static unsigned findDeadCallerSavedReg(MachineBasicBlock &MBB,
   if (!F || MF->getMMI().callsEHReturn())
     return 0;
 
-  const TargetRegisterClass& AvailableRegs = *TRI->getPointerRegClass(*MF, 4);
+  const TargetRegisterClass &AvailableRegs = *TRI->getPointerRegClass(*MF, 4);
 
   unsigned Opc = MBBI->getOpcode();
   switch (Opc) {
@@ -183,7 +183,7 @@ static unsigned findDeadCallerSavedReg(MachineBasicBlock &MBB,
     }
 
     for (auto CS : AvailableRegs)
-      if (!Uses.count(CS))
+      if (!Uses.count(CS) && CS != X86::RIP)
         return CS;
   }
   }
