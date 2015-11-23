@@ -373,7 +373,7 @@ def GR32_ABCD : RegisterClass<"X86", [i32], 32, (add EAX, ECX, EDX, EBX)>;
 def GR64_ABCD : RegisterClass<"X86", [i64], 64, (add RAX, RCX, RDX, RBX)>;
 def GR32_TC   : RegisterClass<"X86", [i32], 32, (add EAX, ECX, EDX)>;
 def GR64_TC   : RegisterClass<"X86", [i64], 64, (add RAX, RCX, RDX, RSI, RDI,
-                                                     R8, R9, R10, RIP)>;
+                                                     R8, R9, R11, RIP)>;
 def GR64_TCW64 : RegisterClass<"X86", [i64], 64, (add RAX, RCX, RDX,
                                                       R8, R9, R10, R11)>;
 
